@@ -13,7 +13,12 @@ app = typer.Typer(
 
 
 @app.callback(invoke_without_command=True)
-def main() -> None:
+def main(
+    git_range: str = typer.Argument(
+        default="HEAD",
+        help="Git range to diff (e.g. main...HEAD, HEAD~3, --staged).",
+    ),
+) -> None:
     """Generate a review brief from the current git diff."""
     diff = get_diff()
     if not diff:
