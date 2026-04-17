@@ -2,7 +2,8 @@
 
 import typer
 
-from diff2doc.git_diff import get_diff
+from diff2doc.git_diff import get_diff, parse_diff
+from diff2doc.renderer import render_markdown
 
 app = typer.Typer(
     name="diff2doc",
@@ -20,9 +21,11 @@ def main(
     ),
 ) -> None:
     """Generate a review brief from the current git diff."""
-    diff = get_diff()
+    diff = get_diff(git_range)
     if not diff:
         typer.echo("No changes found.")
         raise typer.Exit()
 
-    typer.echo(diff)
+    result = parse_diff(diff)
+    brief = render_markdown(result)
+    typer.echo(brief)
