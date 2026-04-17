@@ -17,6 +17,7 @@ class FileDiff:
 
     path: str
     hunks: list[Hunk]
+    explanation: str = ""
 
 
 @dataclass
@@ -25,4 +26,3 @@ class DiffResult:
 
     files: list[FileDiff]
     raw_diff: str
-    explanation: str = ""

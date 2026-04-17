@@ -27,3 +27,27 @@ def test_render_markdown_basic() -> None:
     assert "## src/cli.py" in output
     assert "### Hunk 1" in output
     assert "+    print(diff)" in output
+
+
+def test_render_markdown_with_explanation() -> None:
+    """render_markdown includes the explanation section when present."""
+    diff_result = DiffResult(
+        files=[
+            FileDiff(
+                path="src/cli.py",
+                hunks=[
+                    Hunk(
+                        header="@@ -15,3 +15,4 @@ def main()",
+                        content="+    print(diff)",
+                    )
+                ],
+                explanation="This change adds a print statement for debugging.",
+            )
+        ],
+        raw_diff="not used",
+    )
+
+    output = render_markdown(diff_result)
+
+    assert "## src/cli.py" in output
+    assert "This change adds a print statement for debugging." in output

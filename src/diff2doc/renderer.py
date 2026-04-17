@@ -15,16 +15,14 @@ def render_markdown(diff_result: DiffResult) -> str:
     lines: list[str] = []
     lines.append("# Review Brief")
     lines.append("")
-    
-    if diff_result.explanation:
-        lines.append("## Explanation")
-        lines.append("")
-        lines.append(diff_result.explanation)
-        lines.append("")
 
     for file_diff in diff_result.files:
         lines.append(f"## {file_diff.path}")
         lines.append("")
+
+        if file_diff.explanation:
+            lines.append(file_diff.explanation)
+            lines.append("")
 
         for hunk_number, hunk in enumerate(file_diff.hunks, start=1):
             lines.append(f"### Hunk {hunk_number}")
