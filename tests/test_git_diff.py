@@ -3,7 +3,6 @@
 from subprocess import CompletedProcess
 from unittest.mock import MagicMock, patch
 
-from mypy.stubgen import EMPTY
 import pytest
 
 from diff2doc.git_diff import get_diff, parse_diff

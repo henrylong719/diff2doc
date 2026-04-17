@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 authors = [{ name = "Henry Long" }]
-dependencies = ["typer>=0.12"]
+dependencies = ["anthropic>=0.96.0", "typer>=0.12"]
 
 [project.scripts]
 diff2doc = "diff2doc.cli:app"

@@ -1,6 +1,6 @@
 """Render parsed diff data as markdown review output."""
 
-from diff2doc.models import DiffResult, FileDiff, Hunk
+from diff2doc.models import DiffResult
 
 
 def render_markdown(diff_result: DiffResult) -> str:
@@ -15,6 +15,12 @@ def render_markdown(diff_result: DiffResult) -> str:
     lines: list[str] = []
     lines.append("# Review Brief")
     lines.append("")
+    
+    if diff_result.explanation:
+        lines.append("## Explanation")
+        lines.append("")
+        lines.append(diff_result.explanation)
+        lines.append("")
 
     for file_diff in diff_result.files:
         lines.append(f"## {file_diff.path}")
@@ -22,10 +28,10 @@ def render_markdown(diff_result: DiffResult) -> str:
 
         for hunk_number, hunk in enumerate(file_diff.hunks, start=1):
             lines.append(f"### Hunk {hunk_number}")
-            lines.append(f"```")
+            lines.append("```")
             lines.append(hunk.header)
             lines.append(hunk.content)
-            lines.append(f"```")
+            lines.append("```")
             lines.append("")
 
     return "\n".join(lines)

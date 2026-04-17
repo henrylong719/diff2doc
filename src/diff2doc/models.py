@@ -25,3 +25,4 @@ class DiffResult:
 
     files: list[FileDiff]
     raw_diff: str
+    explanation: str = ""

@@ -2,7 +2,10 @@
 
 import typer
 
+from diff2doc.context import expand_context
+from diff2doc.explanation import explain_groups
 from diff2doc.git_diff import get_diff, parse_diff
+from diff2doc.grouping import group_hunks
 from diff2doc.renderer import render_markdown
 
 app = typer.Typer(
@@ -27,5 +30,8 @@ def main(
         raise typer.Exit()
 
     result = parse_diff(diff)
+    result = expand_context(result)
+    result = group_hunks(result)
+    result = explain_groups(result)
     brief = render_markdown(result)
     typer.echo(brief)
