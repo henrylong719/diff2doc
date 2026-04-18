@@ -20,12 +20,11 @@ app = typer.Typer(
 def main(
     git_range: str = typer.Argument(
         default="HEAD",
-        help="Git range to diff (e.g. main...HEAD, HEAD~3, --staged).",
+        help="Git range to diff (e.g. main...HEAD, HEAD~3).",
     ),
     staged: bool = typer.Option(False, help="Diff staged changes."),
 ) -> None:
     """Generate a review brief from the current git diff."""
-
     try:
         if staged:
             diff = get_diff("--staged")
@@ -42,6 +41,8 @@ def main(
         result = explain_groups(result)
         brief = render_markdown(result)
         typer.echo(brief)
+    except typer.Exit:
+        raise
     except RuntimeError as e:
         typer.echo(f"Error: {e}", err=True)
         raise typer.Exit(code=1)
