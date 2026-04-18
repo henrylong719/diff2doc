@@ -25,7 +25,11 @@ def render_markdown(diff_result: DiffResult) -> str:
             lines.append("")
 
         for hunk_number, hunk in enumerate(file_diff.hunks, start=1):
-            lines.append(f"### Hunk {hunk_number}")
+            if hunk.enclosing_scope:
+                heading = f"### Hunk {hunk_number} — in `{hunk.enclosing_scope}`"
+            else:
+                heading = f"### Hunk {hunk_number}"
+            lines.append(heading)
             lines.append("```")
             lines.append(hunk.header)
             lines.append(hunk.content)

@@ -59,7 +59,17 @@ def explain_groups(diff_result: DiffResult) -> DiffResult:
         RuntimeError: If the API call fails.
     """
 
-    client = anthropic.Anthropic()
+    try:
+        client = anthropic.Anthropic()
+    except anthropic.AuthenticationError:
+        raise RuntimeError(
+            "Invalid API key. Set ANTHROPIC_API_KEY in your environment."
+        )
+
+    if not client.api_key:
+        raise RuntimeError(
+            "No API key found. Set ANTHROPIC_API_KEY in your environment."
+        )
 
     for file_diff in diff_result.files:
         if _count_changed_lines(file_diff) < MIN_CHANGED_LINES:

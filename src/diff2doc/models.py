@@ -9,6 +9,7 @@ class Hunk:
 
     header: str
     content: str
+    enclosing_scope: str | None = None
 
 
 @dataclass

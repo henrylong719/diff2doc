@@ -22,16 +22,26 @@ def main(
         default="HEAD",
         help="Git range to diff (e.g. main...HEAD, HEAD~3, --staged).",
     ),
+    staged: bool = typer.Option(False, help="Diff staged changes."),
 ) -> None:
     """Generate a review brief from the current git diff."""
-    diff = get_diff(git_range)
-    if not diff:
-        typer.echo("No changes found.")
-        raise typer.Exit()
 
-    result = parse_diff(diff)
-    result = expand_context(result)
-    result = group_hunks(result)
-    result = explain_groups(result)
-    brief = render_markdown(result)
-    typer.echo(brief)
+    try:
+        if staged:
+            diff = get_diff("--staged")
+        else:
+            diff = get_diff(git_range)
+
+        if not diff:
+            typer.echo("No changes found.")
+            raise typer.Exit()
+
+        result = parse_diff(diff)
+        result = expand_context(result)
+        result = group_hunks(result)
+        result = explain_groups(result)
+        brief = render_markdown(result)
+        typer.echo(brief)
+    except RuntimeError as e:
+        typer.echo(f"Error: {e}", err=True)
+        raise typer.Exit(code=1)
