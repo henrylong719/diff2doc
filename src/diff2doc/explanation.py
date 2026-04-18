@@ -7,11 +7,16 @@ from diff2doc.models import DiffResult, FileDiff
 EXPLAIN_PROMPT = """\
 You are a code review assistant. Below is a diff for a single file: {file_path}
 Explain what this change does, covering:
-- The intent: what is the developer trying to accomplish?
-- The approach: how are they doing it?
-- Risks: what should a reviewer double-check?
- 
-Keep your explanation concise and direct.
+
+- Intent: What is the developer trying to accomplish?
+- Approach: How are they doing it? Note any patterns or conventions used.
+- Risks: List specific things a reviewer should double-check, such as
+  nil/None values, missing error handling, edge cases in the data, or
+  performance concerns. Reference specific lines or variables where
+  possible.
+
+Keep your explanation concise and direct. Focus on what a human
+reviewer needs to know to evaluate this change confidently.
  
 <diff>
 {diff_text}
